@@ -1,4 +1,4 @@
-import { readFile } from 'fs/promises';
+import { readFile, writeFile } from 'fs/promises';
 import { DB, Credential } from '../types';
 
 export async function readCredentials(): Promise<Credential[]> {
@@ -19,4 +19,30 @@ export async function getCredential(service: string): Promise<Credential> {
   }
 
   return filteredCredential;
+}
+
+export async function addCredential(credential: Credential): Promise<void> {
+  const credentials = await readCredentials();
+
+  const updatedCredentials = [...credentials, credential];
+  const database: DB = {
+    credentials: updatedCredentials,
+  };
+  database.credentials = updatedCredentials;
+  await writeFile('./src/db.json', JSON.stringify(database));
+}
+
+export async function deleteCredential(service: string): Promise<void> {
+  const credentials: Credential[] = await readCredentials();
+  const updatedCredentials = credentials.filter(
+    (credential) => credential.service !== service
+  );
+  if (credentials.length === updatedCredentials.length) {
+    throw new Error(`es gibts nicht zu löschen`);
+  }
+  const database: DB = {
+    credentials: updatedCredentials,
+  };
+  database.credentials = updatedCredentials;
+  await writeFile('./src/db.json', JSON.stringify(database));
 }
