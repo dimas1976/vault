@@ -10,9 +10,9 @@ export async function readCredentials(): Promise<Credential[]> {
 
 export async function getCredential(service: string): Promise<Credential> {
   const credentials = await readCredentials();
-  const filteredCredential = credentials.find((credential) => {
-    credential.service === service;
-  });
+  const filteredCredential = credentials.find(
+    (credential) => credential.service === service
+  );
 
   if (!filteredCredential) {
     throw new Error(`No credential: ${service}`);
