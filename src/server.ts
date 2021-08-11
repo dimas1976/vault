@@ -1,8 +1,18 @@
-import { getCredential, readCredentials } from './utils/credential';
+import {
+  getCredential,
+  readCredentials,
+  addCredential,
+} from './utils/credential';
 import express from 'express';
 
 const app = express();
 const port = 3000;
+
+addCredential({
+  service: 'Yahoo',
+  username: 'dimitri',
+  password: '1234',
+});
 
 app.get('/api/credentials', async (_req, res) => {
   try {
