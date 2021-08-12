@@ -1,0 +1,29 @@
+### Get all credentials ###
+GET http://localhost:3000/api/credentials
+
+### Get single credential ###
+GET http://localhost:3000/api/credentials/Google
+
+###Add new credential###
+POST http://localhost:3000/api/credentials
+Content-Type: application/json
+
+{
+     "service":"GMX",
+     "username":"dimitri",
+    "password":"1234"
+ }
+
+###Delete credential###
+
+DELETE http://localhost:3000/api/credentials/GMX
+
+###Update credential###
+PUT http://localhost:3000/api/credentials/GMX
+Content-Type: application/json
+
+{
+     "service":"GMX",
+     "username":"dimitri",
+    "password":"neuefische"
+ }
