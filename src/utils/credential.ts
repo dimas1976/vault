@@ -10,9 +10,9 @@ export async function readCredentials(): Promise<Credential[]> {
 
 export async function getCredential(service: string): Promise<Credential> {
   const credentials = await readCredentials();
-  const filteredCredential = credentials.find(
-    (credential) => credential.service === service
-  );
+  const filteredCredential = credentials.find((credential) => {
+    return credential.service === service;
+  });
 
   if (!filteredCredential) {
     throw new Error(`No credential: ${service}`);
@@ -25,11 +25,7 @@ export async function addCredential(credential: Credential): Promise<void> {
   const credentials = await readCredentials();
 
   const updatedCredentials = [...credentials, credential];
-  const database: DB = {
-    credentials: updatedCredentials,
-  };
-  database.credentials = updatedCredentials;
-  await writeFile('./src/db.json', JSON.stringify(database));
+  await overwriteDB(updatedCredentials);
 }
 
 export async function deleteCredential(service: string): Promise<void> {
@@ -40,9 +36,24 @@ export async function deleteCredential(service: string): Promise<void> {
   if (credentials.length === updatedCredentials.length) {
     throw new Error(`es gibts nicht zu löschen`);
   }
+  await overwriteDB(updatedCredentials);
+}
+
+export async function updateCredential(
+  service: string,
+  credential: Credential
+): Promise<void> {
+  const credentials = await readCredentials();
+  const filteredCredentials: Credential[] = credentials.filter(
+    (credential) => credential.service !== service
+  );
+  const updatedCredential: Credential[] = [...filteredCredentials, credential];
+  await overwriteDB(updatedCredential);
+}
+
+export async function overwriteDB(credential: Credential[]): Promise<void> {
   const database: DB = {
-    credentials: updatedCredentials,
+    credentials: credential,
   };
-  database.credentials = updatedCredentials;
-  await writeFile('./src/db.json', JSON.stringify(database));
+  await writeFile('./src/db.json', JSON.stringify(database, null, 2));
 }
