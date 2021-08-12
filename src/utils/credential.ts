@@ -34,7 +34,7 @@ export async function deleteCredential(service: string): Promise<void> {
     (credential) => credential.service !== service
   );
   if (credentials.length === updatedCredentials.length) {
-    throw new Error(`es gibts nicht zu löschen`);
+    throw new Error(`There is nothing to delete`);
   }
   await overwriteDB(updatedCredentials);
 }

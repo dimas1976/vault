@@ -36,8 +36,8 @@ app.post('/api/credentials', async (req, res) => {
   try {
     await addCredential(req.body);
   } catch {
-    console.error(`Es wurde kein neues credential zugefügt`);
-    res.send('kein neues credential');
+    console.error(`It is no credential to delete`);
+    res.send('There is no new credential');
   }
 });
 

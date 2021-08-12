@@ -27,6 +27,3 @@ Content-Type: application/json
      "username":"dimitri",
     "password":"neuefische"
  }
-
-### google test###
-GET http://google.com
