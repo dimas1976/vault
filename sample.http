@@ -18,7 +18,15 @@ Content-Type: application/json
 
 DELETE http://localhost:3000/api/credentials/GMX
 
+###Update credential###
+PUT http://localhost:3000/api/credentials/GMX
+Content-Type: application/json
 
+{
+     "service":"GMX",
+     "username":"dimitri",
+    "password":"neuefische"
+ }
 
 ### google test###
 GET http://google.com
