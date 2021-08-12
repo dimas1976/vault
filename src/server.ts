@@ -3,6 +3,7 @@ import {
   readCredentials,
   addCredential,
   deleteCredential,
+  updateCredential,
 } from './utils/credential';
 
 import express from 'express';
@@ -31,10 +32,6 @@ app.get('/api/credentials/:service', async (req, res) => {
   }
 });
 
-app.get('/', (_req, res) => {
-  res.send(readCredentials());
-});
-
 app.post('/api/credentials', async (req, res) => {
   try {
     await addCredential(req.body);
@@ -53,6 +50,15 @@ app.delete('/api/credentials/:service', async (req, res) => {
     console.error(error);
     res.send(`Ups`);
   }
+});
+
+app.put('/api/credentials/:service', async (req, res) => {
+  const { service } = req.params;
+  await updateCredential(service, req.body);
+});
+
+app.get('/', (_req, res) => {
+  res.send(readCredentials());
 });
 
 app.listen(port, () => {
