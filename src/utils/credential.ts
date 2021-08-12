@@ -1,6 +1,6 @@
 import { readFile, writeFile } from 'fs/promises';
 import { DB, Credential } from '../types';
-import { encryptCredential } from './crypto';
+import { decryptCredential, encryptCredential } from './crypto';
 
 export async function readCredentials(): Promise<Credential[]> {
   const response = await readFile('./src/db.json', 'utf-8');
@@ -19,7 +19,7 @@ export async function getCredential(service: string): Promise<Credential> {
     throw new Error(`No credential: ${service}`);
   }
 
-  return filteredCredential;
+  return decryptCredential(filteredCredential);
 }
 
 export async function addCredential(credential: Credential): Promise<void> {
