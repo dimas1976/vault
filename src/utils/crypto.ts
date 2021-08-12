@@ -14,3 +14,17 @@ export function encryptCredential(credential: Credential): Credential {
 
   return partiallyEncryptedCredential;
 }
+
+export function decryptCredential(credential: Credential): Credential {
+  const decryptedPass = CryptoJS.TripleDES.decrypt(
+    credential.password,
+    'neuefische'
+  ).toString(CryptoJS.enc.Utf8);
+
+  const partiallyDecryptedCredential = {
+    ...credential,
+    password: decryptedPass,
+  };
+
+  return partiallyDecryptedCredential;
+}
