@@ -9,9 +9,9 @@ POST http://localhost:3000/api/credentials
 Content-Type: application/json
 
 {
-     "service":"GMX",
+     "service":"Hamburg",
      "username":"dimitri",
-    "password":"1234"
+    "password":"blbblblblaaadadas"
  }
 
 ###Delete credential###

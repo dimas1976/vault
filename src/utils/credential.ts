@@ -1,3 +1,4 @@
+import CryptoJS from 'crypto-js';
 import { readFile, writeFile } from 'fs/promises';
 import { DB, Credential } from '../types';
 
@@ -23,7 +24,11 @@ export async function getCredential(service: string): Promise<Credential> {
 
 export async function addCredential(credential: Credential): Promise<void> {
   const credentials = await readCredentials();
-
+  const encryptedCredentialPass = CryptoJS.TripleDES.encrypt(
+    credential.password,
+    'neuefische'
+  );
+  credential.password = encryptedCredentialPass.toString();
   const updatedCredentials = [...credentials, credential];
   await overwriteDB(updatedCredentials);
 }
