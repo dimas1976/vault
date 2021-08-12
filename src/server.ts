@@ -6,7 +6,7 @@ import {
   updateCredential,
 } from './utils/credential';
 
-import express from 'express';
+import express, { response } from 'express';
 
 const app = express();
 const port = 3000;
@@ -55,6 +55,7 @@ app.delete('/api/credentials/:service', async (req, res) => {
 app.put('/api/credentials/:service', async (req, res) => {
   const { service } = req.params;
   await updateCredential(service, req.body);
+  res.status(200).send();
 });
 
 app.get('/', (_req, res) => {
