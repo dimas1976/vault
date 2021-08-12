@@ -6,7 +6,7 @@ import {
   updateCredential,
 } from './utils/credential';
 
-import express, { response } from 'express';
+import express from 'express';
 
 const app = express();
 const port = 3000;
@@ -35,6 +35,7 @@ app.get('/api/credentials/:service', async (req, res) => {
 app.post('/api/credentials', async (req, res) => {
   try {
     await addCredential(req.body);
+    res.json(req.body);
   } catch {
     console.error(`It is no credential to delete`);
     res.send('There is no new credential');
