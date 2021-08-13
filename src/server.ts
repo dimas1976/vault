@@ -13,7 +13,15 @@ const app = express();
 const port = 3000;
 app.use(express.json());
 
-app.get('/api/credentials', async (_req, res) => {
+app.get('/api/credentials', async (req, res) => {
+  const masterPass = req.headers.authorization;
+  if (!masterPass) {
+    res.status(400).send('Authorization header missing');
+    return;
+  } else if (!(await validateMasterPasswort(masterPass))) {
+    res.status(401).send('Unathorized request');
+    return;
+  }
   try {
     res.status(200).json(await readCredentials());
   } catch (error) {
@@ -28,7 +36,7 @@ app.get('/api/credentials/:service', async (req, res) => {
   if (!masterPass) {
     res.status(400).send('Authorization header missing');
     return;
-  } else if ((await validateMasterPasswort(masterPass)) === false) {
+  } else if (!(await validateMasterPasswort(masterPass))) {
     res.status(401).send('Unathorized request');
     return;
   }
