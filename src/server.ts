@@ -47,7 +47,7 @@ app.post('/api/credentials', async (req, res) => {
   if (!masterPass) {
     res.status(400).send('Authorization header missing');
     return;
-  } else if ((await validateMasterPasswort(masterPass)) === false) {
+  } else if (!(await validateMasterPasswort(masterPass))) {
     res.status(401).send('Unathorized request');
     return;
   }
