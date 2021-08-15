@@ -8,6 +8,13 @@ import {
 
 import express from 'express';
 import { validateMasterPassword } from './utils/validation';
+import { connectToDataBase } from './utils/database';
+import dotenv from 'dotenv';
+dotenv.config();
+
+if (!process.env.MONGODB_URL) {
+  throw new Error(`No MongoDB env variable`);
+}
 
 const app = express();
 const port = 3000;
@@ -23,7 +30,7 @@ app.get('/api/credentials', async (req, res) => {
     return;
   }
   try {
-    res.status(200).json(await readCredentials());
+    res.status(200).json(await readCredentials(masterPassword));
   } catch (error) {
     console.error(error);
     res.status(500).send(`Internal ServerError`);
@@ -60,8 +67,8 @@ app.post('/api/credentials', async (req, res) => {
   }
 
   try {
-    await addCredential(req.body, masterPassword);
-    res.json(req.body);
+    const addedCredentialID = await addCredential(req.body, masterPassword);
+    res.status(200).send(addedCredentialID);
   } catch {
     console.error(`There is no new credential`);
     res.send('There is no new credential');
@@ -71,24 +78,39 @@ app.post('/api/credentials', async (req, res) => {
 app.delete('/api/credentials/:service', async (req, res) => {
   const { service } = req.params;
   try {
-    await deleteCredential(service);
-    res.status(200).send();
+    const deletedCredential = await deleteCredential(service);
+    res.status(200).json(deletedCredential);
   } catch (error) {
     console.error(error);
-    res.send(`Ups`);
+    res.send(error.toString());
   }
 });
 
 app.put('/api/credentials/:service', async (req, res) => {
   const { service } = req.params;
-  await updateCredential(service, req.body);
-  res.status(200).send();
+  const masterPassword = req.headers.authorization;
+  if (!masterPassword) {
+    res.status(400).send('Authorization header missing');
+    return;
+  } else if (!(await validateMasterPassword(masterPassword))) {
+    res.status(401).send('Unathorized request');
+    return;
+  }
+
+  try {
+    await updateCredential(service, req.body, masterPassword);
+    res.status(200).send();
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 app.get('/', (_req, res) => {
   res.send(readCredentials());
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+connectToDataBase(process.env.MONGODB_URL).then(() => {
+  app.listen(port, () => {
+    console.log(`Server is listening on port ${port}!`);
+  });
 });
