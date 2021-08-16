@@ -58,10 +58,9 @@ export async function deleteCredentialFromDB(
 export async function replaceCredentialDB(
   nameOfService: string,
   replacingCredential: Credential
-) {
-  const result = await client
+): Promise<void> {
+  await client
     .db('vault')
     .collection<T>('credentials')
     .findOneAndReplace({ service: nameOfService }, replacingCredential);
-  console.log(result);
 }
