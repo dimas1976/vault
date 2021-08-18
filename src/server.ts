@@ -106,7 +106,7 @@ app.put('/api/credentials/:service', async (req, res) => {
 });
 
 app.get('/', (_req, res) => {
-  res.send(readCredentials());
+  res.send('Hello Credentials!');
 });
 
 connectToDataBase(process.env.MONGODB_URL).then(() => {
