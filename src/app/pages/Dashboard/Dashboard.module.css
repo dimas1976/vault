@@ -1,5 +1,7 @@
 .container {
-  width: 50%;
-  border: 2px solid #3b3535;
-  padding: 2rem;
+  display: grid;
+  align-content: start;
+  justify-items: center;
+  background-color: lightblue;
+  height: 100vh;
 }
