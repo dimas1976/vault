@@ -17,7 +17,7 @@ if (!process.env.MONGODB_URL) {
 }
 
 const app = express();
-const port = 3000;
+const PORT = process.env.PORT;
 app.use(express.json());
 
 app.get('/api/credentials', async (req, res) => {
@@ -110,7 +110,7 @@ app.get('/', (_req, res) => {
 });
 
 connectToDataBase(process.env.MONGODB_URL).then(() => {
-  app.listen(port, () => {
-    console.log(`Server is listening on port ${port}!`);
+  app.listen(PORT, () => {
+    console.log(`Server is listening on port ${PORT}!`);
   });
 });
