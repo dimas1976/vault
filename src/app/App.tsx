@@ -6,7 +6,7 @@ function App(): JSX.Element {
   return (
     <Router>
       <Switch>
-        <Route path="/password/:service">
+        <Route path="/service/:service">
           <Password />
         </Route>
         <Route path="/">
