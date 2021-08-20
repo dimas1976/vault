@@ -5,7 +5,7 @@ export default function Password(): JSX.Element {
   const { service } = useParams<{ service: string }>();
   return (
     <main>
-      <h2>Mein Passwort ist {service}</h2>
+      <h2>Mein Service ist {service}</h2>
     </main>
   );
 }
