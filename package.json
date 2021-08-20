@@ -36,6 +36,8 @@
   },
   "dependencies": {
     "@mdi/font": "^5.9.55",
+    "@mdi/js": "^5.9.55",
+    "@mdi/react": "^1.5.0",
     "crypto-js": "^4.1.1",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
