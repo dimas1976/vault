@@ -13,6 +13,7 @@ export default function NewCredentialPage(): JSX.Element {
     await fetch('/api/credentials', {
       method: 'POST',
       headers: {
+        'Content-Type': 'application/json',
         Authorization: masterPassword,
       },
       body: JSON.stringify(newCredential),
