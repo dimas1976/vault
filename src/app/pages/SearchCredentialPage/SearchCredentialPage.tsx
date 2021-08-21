@@ -1,16 +1,27 @@
 import React, { useState } from 'react';
+import { Credential } from '../../../types';
 import styles from './SearchCredentialPage.module.css';
 
 export default function SearchCredentialPage(): JSX.Element {
   const [service, setServiceName] = useState('');
   const [masterPassword, setMasterPassword] = useState('');
 
+  async function getCredential(): Promise<void> {
+    const response = await fetch(`/api/credentials/${service}`, {
+      headers: {
+        Authorization: masterPassword,
+      },
+    });
+    const searchedCredential: Credential = await response.json();
+    window.location.href = `/credential/${searchedCredential._id}`;
+  }
   return (
     <main className={styles['search-credential']}>
-      <h2>Add new Credential</h2>
+      <h2>Search For Credential</h2>
       <form
         onSubmit={(event) => {
           event.preventDefault();
+          getCredential();
         }}
         className={styles['search-credential__form']}
       >
