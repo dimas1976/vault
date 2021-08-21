@@ -1,4 +1,5 @@
 export type Credential = {
+  _id: number;
   service: string;
   username: string;
   password: string;
