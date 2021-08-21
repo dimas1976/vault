@@ -58,7 +58,7 @@ export default function Dashboard(): JSX.Element {
       <section className={styles.credentials}>
         {credentials.length !== 0 &&
           credentials.map((credential) => (
-            <CredentialCard credential={credential} key={credential.service} />
+            <CredentialCard credential={credential} key={credential._id} />
           ))}
         <div className={styles.credentials__buttons}>
           <Link to="">
