@@ -11,6 +11,11 @@ type CredentialCardProps = {
 export default function CredentialCard({
   credential,
 }: CredentialCardProps): JSX.Element {
+  async function deleteCredential() {
+    await fetch(`/api/credentials/${credential.service}`, {
+      method: 'DELETE',
+    });
+  }
   return (
     <article className={styles.credential}>
       <h2>{credential.service}</h2>
@@ -23,7 +28,12 @@ export default function CredentialCard({
           <Link to="">
             <Icon className={styles.icon} path={mdiPencil} />
           </Link>
-          <Link to="">
+          <Link
+            to=""
+            onClick={() => {
+              deleteCredential();
+            }}
+          >
             <Icon className={styles.icon} path={mdiDelete} />
           </Link>
         </div>
