@@ -61,7 +61,7 @@ export default function Dashboard(): JSX.Element {
             <CredentialCard credential={credential} key={credential._id} />
           ))}
         <div className={styles.credentials__buttons}>
-          <Link to="">
+          <Link to="/search">
             <Icon className={styles.icon} path={mdiMagnify} />
           </Link>
           <Link to="/add">
