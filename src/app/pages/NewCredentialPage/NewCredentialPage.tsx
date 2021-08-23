@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styles from './NewCredentialPage.module.css';
+import { sendNewCredentialToAPI } from '../../../utils/api';
 
 export default function NewCredentialPage(): JSX.Element {
   const [service, setServiceName] = useState<string>('');
@@ -9,26 +10,15 @@ export default function NewCredentialPage(): JSX.Element {
   const [masterPassword, setMasterPassword] = useState<string>('');
   const history = useHistory();
 
-  async function sendNewCredentialToAPI() {
-    const newCredential = { service, username, password };
-    await fetch('/api/credentials', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: masterPassword,
-      },
-      body: JSON.stringify(newCredential),
-    });
-    history.push('/');
-  }
-
   return (
     <main className={styles['new-credential']}>
       <h2>Add new Credential</h2>
       <form
         onSubmit={(event) => {
           event.preventDefault();
-          sendNewCredentialToAPI();
+          const newCredential = { service, username, password };
+          sendNewCredentialToAPI(newCredential, masterPassword);
+          history.push('/');
         }}
         className={styles['new-credential__form']}
       >
