@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import type { Credential } from '../../../types';
 import CredentialCard from '../../components/CredentialCard/CredentialCard';
+import { setCredentialModel } from '../../../Model/Model';
 
 export default function Dashboard(): JSX.Element {
   const [credentials, setCredentials] = useState<Credential[]>([]);
@@ -18,6 +19,7 @@ export default function Dashboard(): JSX.Element {
       },
     });
     const credentials: Credential[] = await response.json();
+    setCredentialModel(credentials);
     setCredentials(credentials);
   }
 
