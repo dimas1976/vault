@@ -4,7 +4,7 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import NewCredentialPage from './pages/NewCredentialPage/NewCredentialPage';
 import SearchCredentialPage from './pages/SearchCredentialPage/SearchCredentialPage';
 import Password from './pages/Password/Password';
-import DetailedCredential from './pages/DetailedCredential/DetailedCredential';
+import EditCredentialPage from './pages/EditCredentialPage/EditCredentialPage';
 function App(): JSX.Element {
   return (
     <Router>
@@ -15,8 +15,8 @@ function App(): JSX.Element {
         <Route path="/search">
           <SearchCredentialPage />
         </Route>
-        <Route path="/credential/:credentialId">
-          <DetailedCredential />
+        <Route path="/credential/:serviceName/edit">
+          <EditCredentialPage />
         </Route>
         <Route path="/service/:service">
           <Password />
