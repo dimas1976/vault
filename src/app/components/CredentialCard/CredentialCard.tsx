@@ -7,15 +7,12 @@ import { Link } from 'react-router-dom';
 
 type CredentialCardProps = {
   credential: Credential;
+  onDeleteClick: (credential: Credential) => void;
 };
 export default function CredentialCard({
   credential,
+  onDeleteClick,
 }: CredentialCardProps): JSX.Element {
-  async function deleteCredential() {
-    await fetch(`/api/credentials/${credential.service}`, {
-      method: 'DELETE',
-    });
-  }
   return (
     <article className={styles.credential}>
       <h2>{credential.service}</h2>
@@ -25,17 +22,16 @@ export default function CredentialCard({
           <p>{credential.password}</p>
         </div>
         <div className={styles.content__buttons}>
-          <Link to="">
+          <Link to={`/credential/${credential.service}/edit`}>
             <Icon className={styles.icon} path={mdiPencil} />
           </Link>
-          <Link
-            to=""
+          <button
             onClick={() => {
-              deleteCredential();
+              onDeleteClick(credential);
             }}
           >
             <Icon className={styles.icon} path={mdiDelete} />
-          </Link>
+          </button>
         </div>
       </div>
     </article>
