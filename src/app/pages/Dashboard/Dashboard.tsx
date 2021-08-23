@@ -10,6 +10,7 @@ import CredentialCard from '../../components/CredentialCard/CredentialCard';
 export default function Dashboard(): JSX.Element {
   const [credentials, setCredentials] = useState<Credential[]>([]);
   const [masterPassword, setMasterpassword] = useState('');
+
   async function fetchCredentials() {
     const response = await fetch('/api/credentials', {
       headers: {
@@ -19,21 +20,13 @@ export default function Dashboard(): JSX.Element {
     const credentials: Credential[] = await response.json();
     setCredentials(credentials);
   }
-  // useEffect(() => {
-  //   async function fetchCredentials() {
-  //     const response = await fetch('/api/credentials', {
-  //       headers: {
-  //         Authorization: masterPassword,
-  //       },
-  //     });
-  //     const credentials = await response.json();
-  //     setCredentials(credentials);
-  //   }
-  //   if (!masterPassword) {
-  //     setCredentials([]);
-  //   }
-  //   fetchCredentials();
-  // }, [masterPassword]);
+
+  async function deleteCredential(credential: Credential) {
+    await fetch(`/api/credentials/${credential.service}`, {
+      method: 'DELETE',
+    });
+    fetchCredentials();
+  }
 
   return (
     <main className={styles.container}>
@@ -58,7 +51,11 @@ export default function Dashboard(): JSX.Element {
       <section className={styles.credentials}>
         {credentials.length !== 0 &&
           credentials.map((credential) => (
-            <CredentialCard credential={credential} key={credential._id} />
+            <CredentialCard
+              credential={credential}
+              key={credential._id}
+              onDeleteClick={deleteCredential}
+            />
           ))}
         <div className={styles.credentials__buttons}>
           <Link to="/search">
