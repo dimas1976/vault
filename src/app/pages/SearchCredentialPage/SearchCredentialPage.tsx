@@ -6,14 +6,19 @@ export default function SearchCredentialPage(): JSX.Element {
   const [service, setServiceName] = useState('');
   const [masterPassword, setMasterPassword] = useState('');
 
-  async function getCredential(): Promise<void> {
+  async function getSearchedCredential(): Promise<void> {
     const response = await fetch(`/api/credentials/${service}`, {
       headers: {
         Authorization: masterPassword,
       },
     });
+
+    if (!response.ok) {
+      return;
+    }
     const searchedCredential: Credential = await response.json();
-    window.location.href = `/credential/${searchedCredential._id}`;
+    window.location.href = `/credential/${searchedCredential._id}`; //ladt die Seite neu und alle States gehen verloren
+    //stattdessen useHistory nutzen
   }
   return (
     <main className={styles['search-credential']}>
@@ -21,7 +26,7 @@ export default function SearchCredentialPage(): JSX.Element {
       <form
         onSubmit={(event) => {
           event.preventDefault();
-          getCredential();
+          getSearchedCredential();
         }}
         className={styles['search-credential__form']}
       >
