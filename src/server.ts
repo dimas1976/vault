@@ -86,7 +86,7 @@ app.delete('/api/credentials/:service', async (req, res) => {
   }
 });
 
-app.put('/api/credentials/:service', async (req, res) => {
+app.patch('/api/credentials/:service', async (req, res) => {
   const { service } = req.params;
   const masterPassword = req.headers.authorization;
   if (!masterPassword) {
