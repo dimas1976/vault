@@ -16,8 +16,13 @@ export async function getCredential(
   service: string,
   masterPass: string
 ): Promise<Credential> {
-  const filteredCredential: Credential = await getCredentialFromDB(service);
-  return decryptCredential(filteredCredential, masterPass);
+  const credentialCollection = getCredentialCollection();
+  const encryptedCredential = await credentialCollection.findOne({ service });
+
+  if (!encryptedCredential) {
+    throw new Error(`Unable to find service ${service}`);
+  }
+  return decryptCredential(encryptedCredential, masterPass);
 }
 
 export async function addCredential(
@@ -25,7 +30,7 @@ export async function addCredential(
   masterPass: string
 ): Promise<string> {
   const encryptedCredential = encryptCredential(credential, masterPass);
-  const savedCredential = await getCollection('credential').insertOne(
+  const savedCredential = await getCollection('credentials').insertOne(
     encryptedCredential
   );
   const id = savedCredential.insertedId.toString();

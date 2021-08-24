@@ -3,5 +3,25 @@
   align-content: start;
   justify-items: center;
   background-color: lightblue;
-  height: 100vh;
+}
+
+.credentials__buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-content: space-between;
+}
+
+.credentials__buttons button {
+  width: 3rem;
+  border: 0;
+  background-color: blue;
+  border-radius: 50%;
+}
+.addButton {
+  justify-self: end;
+}
+
+.icon {
+  width: 2rem;
+  color: #fff;
 }
