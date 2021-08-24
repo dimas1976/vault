@@ -1,15 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { getCredentialModel } from '../../../Model/Model';
 import { Credential } from '../../../types';
+import { updateCredentialInDB } from '../../../utils/api';
 import styles from './EditCredentialPage.module.css';
 
 export default function EditCredentialPage(): JSX.Element {
   const { serviceName }: { serviceName: string } = useParams();
   const [service, setServiceName] = useState(serviceName);
-  const [username, setUserName] = useState(username);
+  const [credential, setCredential] = useState<Credential | undefined>();
+  const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [masterPassword, setMasterPassword] = useState('');
-  const [credential, setCredential] = useState(null);
+
+  //Fehler--> Nach useEffect kein Rendering!!!
+  useEffect(() => {
+    const credentials: Credential[] = getCredentialModel();
+    console.log(credentials);
+    const filteredCredential = credentials.find(
+      (credential) => (credential.service = serviceName)
+    );
+    if (!filteredCredential) {
+      throw new Error('');
+    }
+
+    setCredential(filteredCredential);
+    console.log(filteredCredential);
+    setUserName(filteredCredential.username);
+    setPassword(filteredCredential.password);
+  }, [credential]);
 
   return (
     <main className={styles['new-credential']}>
@@ -55,13 +74,6 @@ export default function EditCredentialPage(): JSX.Element {
       username,
       password,
     };
-    await fetch(`/api/credentials/${serviceName}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: masterPassword,
-      },
-      body: JSON.stringify(updatingCredential),
-    });
+    await updateCredentialInDB(serviceName, masterPassword, updatingCredential);
   }
 }
